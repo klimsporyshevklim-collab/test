@@ -1,5 +1,5 @@
 {
-  "name": "scarab-multiplayer-engine",
+  "name": "scarab-battletoads-engine",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {

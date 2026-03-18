@@ -9,14 +9,14 @@ app.use(cors());
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
 
-// Все файлы игры (html, js) должны лежать в папке public
+// Статические файлы (твой index.html) должны лежать в папке public
 app.use(express.static(path.join(__dirname, 'public')));
 
 io.on('connection', (socket) => {
-    console.log('Player connected to Render Engine');
+    console.log('Player linked to Render');
 });
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-    console.log(`Battletoads Server running on port ${PORT}`);
+    console.log(`Server is LIVE on port ${PORT}`);
 });

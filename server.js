@@ -1,18 +1,30 @@
 const express = require('express');
-const cors = require('cors');
+const http = require('http');
+const { Server } = require('socket.io');
 const path = require('path');
+const cors = require('cors');
+
 const app = express();
-const PORT = process.env.PORT || 3000;
+app.use(cors());
+const server = http.createServer(app);
+const io = new Server(server, { cors: { origin: "*" } });
 
-app.use(cors()); // Разрешаем всем (включая Firebase) брать файлы
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Раздаем статические файлы из папки public
-app.use(express.static('public'));
+let players = 0;
 
-app.get('/', (req, res) => {
-  res.send('Scarab Engine Asset Server is Running!');
+io.on('connection', (socket) => {
+    players++;
+    console.log('A player connected. Total:', players);
+    io.emit('playerCountUpdate', players);
+
+    socket.on('disconnect', () => {
+        players--;
+        io.emit('playerCountUpdate', players);
+    });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });

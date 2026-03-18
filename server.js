@@ -9,7 +9,7 @@ app.use(cors());
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
 
-// Раздаем файлы из папки public
+// Все файлы игры (html, js) должны лежать в папке public
 app.use(express.static(path.join(__dirname, 'public')));
 
 io.on('connection', (socket) => {
@@ -18,5 +18,5 @@ io.on('connection', (socket) => {
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-    console.log(`Server is LIVE on port ${PORT}`);
+    console.log(`Battletoads Engine running on port ${PORT}`);
 });

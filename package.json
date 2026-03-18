@@ -1,6 +1,7 @@
 {
-  "name": "scarab-battletoads-engine",
+  "name": "scarab-engine-render",
   "version": "1.0.0",
+  "description": "Multiplayer Engine for AI Arena",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplayer Battletoads - Retrosega</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            font-family: 'Courier New', monospace;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        #game-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #ui-overlay {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        #connection-status {
+            color: #ff0000;
+        }
+
+        #connection-status.connected {
+            color: #00ff00;
+        }
+
+        #player-count {
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container"></div>
+
+    <div id="ui-overlay">
+        <div id="connection-status">Connecting...</div>
+        <div id="player-count">Players: 0</div>
+        <div>Controls: Arrow Keys to move, Up/Space to jump</div>
+    </div>
+
+    <!-- Phaser 3 library -->
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
+
+    <!-- Socket.io client library -->
+    <script src="/socket.io/socket.io.js"></script>
+
+    <!-- Battletoads physics and game logic -->
+    <script src="js/BattletoadsPhysics.js"></script>
+    <script src="js/GameLogic.js"></script>
+    <script src="js/LevelMapLoader.js"></script>
+
+    <!-- Main game script -->
+    <script src="game.js"></script>
+
+    <script>
+        // Update UI based on connection status
+        const connectionStatus = document.getElementById('connection-status');
+        const playerCount = document.getElementById('player-count');
+
+        // This will be called when socket connects
+        function updateConnectionStatus(connected, playerCountNum = 0) {
+            connectionStatus.textContent = connected ? 'Connected' : 'Disconnected';
+            connectionStatus.className = connected ? 'connected' : '';
+            playerCount.textContent = `Players: ${playerCountNum}`;
+        }
+
+        // Make updateConnectionStatus available globally for game.js
+        window.updateConnectionStatus = updateConnectionStatus;
+
+        // Error handling
+        window.addEventListener('error', (e) => {
+            console.error('Game error:', e.error);
+            connectionStatus.textContent = 'Error: ' + e.message;
+            connectionStatus.className = '';
+        });
+
+        // Prevent context menu on right click
+        document.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+        });
+    </script>
+</body>
+</html>

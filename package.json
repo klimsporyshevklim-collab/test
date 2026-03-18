@@ -1,7 +1,6 @@
 {
-  "name": "scarab-engine-render",
+  "name": "scarab-engine",
   "version": "1.0.0",
-  "description": "Multiplayer Engine for AI Arena",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
